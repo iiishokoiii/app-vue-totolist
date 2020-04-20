@@ -1,0 +1,14 @@
+.sass-test {
+  color: $col-primary;
+  @include mq("sm-and-up") {
+    color: red;
+  }
+}
+
+main {
+  background-color: $col-grey-1;
+}
+a {
+  color: #ccc;
+  text-decoration: none;
+}
