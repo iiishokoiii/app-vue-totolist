@@ -1,0 +1,11 @@
+.c-form-wrapper {
+  max-width: 344px;
+  margin: 0 auto;
+  @include mq("md-and-up") {
+    max-width: 700px;
+  }
+}
+.c-form {
+  padding: 10px 20px;
+  background: $col-white;
+}

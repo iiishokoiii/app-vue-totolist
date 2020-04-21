@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <ToolbarSub />
-    <div class="FormEdit__wrapper">
+    <div class="c-form-wrapper">
       <FormEdit :itemid="id" />
     </div>
   </v-content>
@@ -25,10 +25,7 @@ export default {
 </script>
 
 <style lang="scss">
-body {
-  background-color: #ccc;
-}
-.FormEdit__wrapper {
+.form-edit__wrapper {
   max-width: 344px;
   margin: 0 auto;
   @include mq("sm-and-up") {

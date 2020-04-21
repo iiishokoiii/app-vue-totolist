@@ -1,42 +1,25 @@
 <template>
   <v-content>
     <ToolbarSub />
-    <p>タスク追加画面</p>
-    <div class="editcard__wrapper">
-      <FormEdit :itemid="itemid" />
+    <div class="c-form-wrapper">
+      <FormAdd />
     </div>
   </v-content>
 </template>
 
 <script>
 import ToolbarSub from "../components/ToolbarSub";
-import FormEdit from "../components/FormEdit";
+import FormAdd from "../components/FormAdd";
 
 export default {
   name: "Add",
 
   components: {
     ToolbarSub,
-    FormEdit
+    FormAdd
   },
-  data: () => ({}),
-  computed: {
-    itemid: function() {
-      return this.$store.state.items.length;
-    }
-  }
+  data: () => ({})
 };
 </script>
 
-<style lang="scss">
-body {
-  background-color: #ccc;
-}
-.editcard__wrapper {
-  max-width: 344px;
-  margin: 0 auto;
-  @include mq("md-and-up") {
-    max-width: 700px;
-  }
-}
-</style>
+<style lang="scss"></style>

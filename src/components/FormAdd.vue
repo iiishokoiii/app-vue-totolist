@@ -8,7 +8,6 @@
       </p>
       <div class="d-flex">
         <p>タグ：</p>
-        <Tags :itemid="itemid" />
       </div>
       <p>
         メモ：
@@ -17,36 +16,52 @@
     </div>
     <p><button @click="saveItem()">Save</button></p>
     <p><button @click="$router.push('/')">Cancel</button></p>
-    <p><button @click="$router.push('/delete/' + itemid)">Delete</button></p>
   </div>
 </template>
 
 <script>
-import Tags from "../components/Tags";
 import { mapActions } from "vuex";
 
 export default {
-  name: "FormEdit",
-  components: {
-    Tags
+  name: "FormAdd",
+  components: {},
+  data() {
+    return {
+      idx: this.$store.getters.itemLength
+    };
   },
-  props: ["itemid"],
   computed: {
     tmpItem() {
-      return this.$store.getters.itemById(this.itemid);
+      return {
+        title: "",
+        deadline: this.getDate(),
+        isChecked: false,
+        memo: ""
+      };
     }
   },
   methods: {
-    ...mapActions(["updateItemById", "deleteItemById"]),
+    ...mapActions(["updateItemById"]),
     updateDate(e) {
       this.tmpItem.deadline = e.target.value;
     },
-    saveItem() {
-      this.updateItemById({ id: this.itemid, newItem: this.tmpItem });
-      this.$router.push("/");
+    getDate() {
+      let date = new Date();
+      return (
+        date.getFullYear() +
+        "-" +
+        ("00" + Number(date.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("00" + date.getDate()).slice(-2)
+      );
     },
-    deleteItem() {
-      this.deleteItemById({ id: this.itemid });
+    getId() {
+      let date = new Date();
+      return date.getTime();
+    },
+    saveItem() {
+      this.tmpItem.id = this.getId();
+      this.updateItemById({ id: this.tmpItem.id, newItem: this.tmpItem });
       this.$router.push("/");
     }
   }
