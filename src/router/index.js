@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import List from "../views/List.vue";
 import Edit from "../views/Edit.vue";
 import Add from "../views/Add.vue";
+import Delete from "../views/Delete.vue";
+import Error from "../views/Error.vue";
 
 Vue.use(VueRouter);
 
@@ -22,6 +24,17 @@ const routes = [
     path: "/add/",
     name: "add",
     component: Add
+  },
+  {
+    path: "/delete/:id",
+    name: "delete",
+    props: route => ({ id: Number(route.params.id) }),
+    component: Delete
+  },
+  {
+    path: "/error/",
+    name: "error",
+    component: Error
   }
 ];
 
