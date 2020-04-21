@@ -8,19 +8,19 @@
 <script>
 export default {
   name: "BtnCheck",
-  data() {
-    return { idx: this.itemid - 1 };
-  },
-  props: ["itemid"],
+  props: ["id"],
   computed: {
     item() {
-      return this.$store.getters.item(this.idx);
+      return this.$store.getters.itemById(this.id);
     }
   },
   methods: {
     toggleCheck: function() {
       this.item.isChecked = !this.item.isChecked;
-      this.$store.commit("updateItem", { idx: this.idx, newItem: this.item });
+      this.$store.dispatch("updateItemById", {
+        id: this.id,
+        newItem: this.item
+      });
     }
   }
 };

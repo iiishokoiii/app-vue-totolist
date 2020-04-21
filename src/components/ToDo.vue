@@ -6,7 +6,7 @@
         <p class="todo__deadline mr-2 mb-0">
           <v-icon class="mr-1">mdi-calendar-clock</v-icon>{{ item.deadline }}
         </p>
-        <Tags :itemid="itemid" />
+        <Tags :itemid="id" />
       </div>
     </div>
     <button class="todo__arrow" @click="toEditMode()">
@@ -22,18 +22,15 @@ export default {
   components: {
     Tags
   },
-  data() {
-    return { idx: this.itemid - 1 };
-  },
-  props: ["itemid"],
+  props: ["id"],
   computed: {
     item() {
-      return this.$store.getters.item(this.idx);
+      return this.$store.getters.itemById(this.id);
     }
   },
   methods: {
     toEditMode() {
-      this.$router.push("/edit/" + this.itemid);
+      this.$router.push("/edit/" + this.id);
     }
   }
 };
@@ -67,8 +64,5 @@ export default {
       font-size: 1em;
     }
   }
-  // &__addbtn {
-  //   max-width: 344px;
-  // }
 }
 </style>

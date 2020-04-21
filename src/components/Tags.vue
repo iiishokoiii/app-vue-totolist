@@ -1,11 +1,7 @@
 <template>
   <div class="tags">
-    <p
-      class="tags__item mr-1 mt-1 mb-0"
-      v-for="idx in item.tagIdx"
-      v-bind:key="idx"
-    >
-      {{ tags[idx] }}
+    <p class="tags__item mr-1 mt-1 mb-0" v-for="n in item.tags" v-bind:key="n">
+      {{ tags[n] }}
     </p>
   </div>
 </template>
@@ -13,13 +9,10 @@
 <script>
 export default {
   name: "Tags",
-  data() {
-    return { idx: this.itemid - 1 };
-  },
   props: ["itemid"],
   computed: {
     item() {
-      return this.$store.getters.item(this.idx);
+      return this.$store.getters.itemById(this.itemid);
     },
     tags() {
       return this.$store.getters.tags;

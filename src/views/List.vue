@@ -3,12 +3,12 @@
     <toolbar />
     <div class="todolist__wrapper d-flex flex-column">
       <div
-        v-for="id in itemsLength"
-        v-bind:key="id"
+        v-for="item in items"
+        v-bind:key="item.id"
         class="mb-2 d-flex .align-self-strech"
       >
-        <BtnCheck :itemid="id" />
-        <ToDo :itemid="id" />
+        <BtnCheck :id="item.id" />
+        <ToDo :id="item.id" />
       </div>
       <p class="todolist__addbtn" outlined>
         <v-btn text @click="toAddItem">Add Task</v-btn>
@@ -30,12 +30,12 @@ export default {
     ToDo
   },
   computed: {
-    itemsLength: function() {
-      return this.$store.getters.itemLength;
+    items() {
+      return this.$store.getters.items;
     }
   },
   methods: {
-    toAddItem: function() {
+    toAddItem() {
       this.$router.push("/add/");
     }
   }
