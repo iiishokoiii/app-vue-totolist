@@ -1,23 +1,26 @@
 <template>
   <div>
-    <div class="c-form">
-      <v-text-field v-model="tmpItem.title"> </v-text-field>
+    <div class="c-form form-edit">
+      <v-text-field v-model="tmpItem.title"></v-text-field>
       <p>
         期限：
-        <input type="date" :value="tmpItem.deadline" @change="updateDate" />
+        <input class="c-form__input" type="date" :value="tmpItem.deadline" @change="updateDate" />
       </p>
       <div class="d-flex">
-        <p>タグ：</p>
-        <Tags :itemid="itemid" />
+        <p class="form-edit__tag">タグ：</p>
+        <Tags :arr="tmpItem.tagId" :enEdit="enEdit" />
       </div>
-      <p>
-        メモ：
-        <input type="textarea" v-model="tmpItem.memo" />
-      </p>
+      <div>
+        <p class="mb-2">メモ：</p>
+        <v-textarea outlined class="mt-1" v-model="tmpItem.memo"></v-textarea>
+      </div>
     </div>
-    <p><button @click="saveItem()">Save</button></p>
-    <p><button @click="$router.push('/')">Cancel</button></p>
-    <p><button @click="$router.push('/delete/' + itemid)">Delete</button></p>
+    <div class="d-flex justify-center mt-4">
+      <v-btn class="mr-2" color="white" @click="$router.push('/')">
+        <v-icon>mdi-chevron-left</v-icon>キャンセル
+      </v-btn>
+      <v-btn class="mr-2" color="primary" @click="saveItem()">保存</v-btn>
+    </div>
   </div>
 </template>
 
@@ -31,26 +34,37 @@ export default {
     Tags
   },
   props: ["itemid"],
+  data() {
+    return {
+      enEdit: true
+    };
+  },
   computed: {
     tmpItem() {
       return this.$store.getters.itemById(this.itemid);
+    },
+    tmpTags() {
+      return this.$store.getters.tags;
     }
   },
   methods: {
-    ...mapActions(["updateItemById", "deleteItemById"]),
+    ...mapActions(["updateItemById", "deleteItemById", "updateTags"]),
     updateDate(e) {
       this.tmpItem.deadline = e.target.value;
     },
     saveItem() {
       this.updateItemById({ id: this.itemid, newItem: this.tmpItem });
-      this.$router.push("/");
-    },
-    deleteItem() {
-      this.deleteItemById({ id: this.itemid });
+      this.updateTags({ tmpTags: this.tmpTags });
       this.$router.push("/");
     }
   }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.form-edit {
+  &__tag {
+    min-width: 55px;
+  }
+}
+</style>

@@ -8,15 +8,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     items: [],
-    tags: []
+    tags: [],
   },
   getters: {
     items(state) {
       return state.items;
     },
     itemById(state) {
-      return id => {
-        let arr = state.items.filter(item => {
+      return (id) => {
+        let arr = state.items.filter((item) => {
           return item.id === id;
         });
         return arr[0];
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     },
     tags(state) {
       return state.tags;
-    }
+    },
   },
   mutations: {
     updateItem(state, { idx, newItem }) {
@@ -41,7 +41,7 @@ export default new Vuex.Store({
     },
     clearTags(state) {
       state.tags = [];
-    }
+    },
   },
   actions: {
     fetchItems({ commit }) {
@@ -49,9 +49,9 @@ export default new Vuex.Store({
         .firestore()
         .collection("boards/1/items")
         .get()
-        .then(docs => {
+        .then((docs) => {
           commit("clearItems");
-          docs.forEach(doc => {
+          docs.forEach((doc) => {
             commit("addItem", doc.data());
           });
         })
@@ -64,9 +64,9 @@ export default new Vuex.Store({
         .firestore()
         .doc("boards/1/tags/0")
         .get()
-        .then(doc => {
+        .then((doc) => {
           commit("clearTags");
-          doc.data().tags.forEach(tag => {
+          doc.data().tags.forEach((tag) => {
             commit("addTag", tag);
           });
         })
@@ -91,8 +91,17 @@ export default new Vuex.Store({
         .then(() => {
           dispatch("fetchItems");
         });
-    }
+    },
+    updateTags({ dispatch }, { tmpTags }) {
+      firebase
+        .firestore()
+        .doc("boards/1/tags/0")
+        .set({ tags: tmpTags })
+        .then(() => {
+          dispatch("fetchTags");
+        });
+    },
   },
-  modules: {}
+  modules: {},
 });
 //

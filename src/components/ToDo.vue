@@ -2,11 +2,12 @@
   <div class="todo">
     <div class="todo__content">
       <p class="mb-0">{{ item.title }}</p>
-      <div class="d-sm-flex">
+      <div class="d-md-flex">
         <p class="todo__deadline mr-2 mb-0">
-          <v-icon class="mr-1">mdi-calendar-clock</v-icon>{{ item.deadline }}
+          <v-icon class="mr-1">mdi-calendar-clock</v-icon>
+          {{ item.deadline }}
         </p>
-        <Tags :itemid="id" />
+        <Tags :arr="item.tagId" :enEdit="false" />
       </div>
     </div>
     <button class="todo__arrow" @click="toEditMode()">

@@ -1,33 +1,41 @@
 <template>
   <div>
     <div class="c-form">
-      <v-text-field v-model="tmpItem.title"> </v-text-field>
+      <v-text-field v-model="tmpItem.title"></v-text-field>
       <p>
         期限：
-        <input type="date" :value="tmpItem.deadline" @change="updateDate" />
+        <input class="c-form__input" type="date" :value="tmpItem.deadline" @change="updateDate" />
       </p>
       <div class="d-flex">
-        <p>タグ：</p>
+        <p class="form-add__tag">タグ：</p>
+        <Tags :arr="tmpItem.tagId" :enEdit="enEdit" />
       </div>
-      <p>
-        メモ：
-        <input type="textarea" v-model="tmpItem.memo" />
-      </p>
+      <div>
+        <p class="mb-2 form-add__tag">メモ：</p>
+        <v-textarea outlined class="mt-1" v-model="tmpItem.memo"></v-textarea>
+      </div>
     </div>
-    <p><button @click="saveItem()">Save</button></p>
-    <p><button @click="$router.push('/')">Cancel</button></p>
+    <div class="d-flex justify-center mt-4">
+      <v-btn class="mr-2" color="white" @click="$router.push('/')">
+        <v-icon>mdi-chevron-left</v-icon>キャンセル
+      </v-btn>
+      <v-btn class="mr-2" color="primary" @click="saveItem()">保存</v-btn>
+    </div>
   </div>
 </template>
 
 <script>
+import Tags from "../components/Tags";
 import { mapActions } from "vuex";
 
 export default {
   name: "FormAdd",
-  components: {},
+  components: {
+    Tags
+  },
   data() {
     return {
-      idx: this.$store.getters.itemLength
+      enEdit: true
     };
   },
   computed: {
@@ -36,7 +44,8 @@ export default {
         title: "",
         deadline: this.getDate(),
         isChecked: false,
-        memo: ""
+        memo: "",
+        tagId: []
       };
     }
   },
@@ -62,10 +71,17 @@ export default {
     saveItem() {
       this.tmpItem.id = this.getId();
       this.updateItemById({ id: this.tmpItem.id, newItem: this.tmpItem });
+      this.updateTags({ tmpTags: this.tmpTags });
       this.$router.push("/");
     }
   }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.form-edit {
+  &__tag {
+    min-width: 55px;
+  }
+}
+</style>
