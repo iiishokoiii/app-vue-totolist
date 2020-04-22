@@ -1,7 +1,7 @@
 <template>
   <v-content>
-    <ToolbarSub />
-    <div class="c-form-wrapper">
+    <ToolbarSub link="/" />
+    <div class="c-wrapper">
       <FormAdd />
     </div>
   </v-content>
@@ -13,12 +13,10 @@ import FormAdd from "../components/FormAdd";
 
 export default {
   name: "Add",
-
   components: {
     ToolbarSub,
     FormAdd
-  },
-  data: () => ({})
+  }
 };
 </script>
 

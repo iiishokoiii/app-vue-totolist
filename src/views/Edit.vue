@@ -1,7 +1,7 @@
 <template>
   <v-content>
-    <ToolbarSub />
-    <div class="c-form-wrapper">
+    <ToolbarSub link="/" :itemid="id" enDeleteBtn="true" />
+    <div class="c-wrapper">
       <FormEdit :itemid="id" />
     </div>
   </v-content>
@@ -13,23 +13,12 @@ import FormEdit from "../components/FormEdit";
 
 export default {
   name: "Edit",
-
   components: {
     ToolbarSub,
     FormEdit
   },
-  data: () => ({}),
-  props: ["id"],
-  computed: {}
+  props: ["id"]
 };
 </script>
 
-<style lang="scss">
-.form-edit__wrapper {
-  max-width: 344px;
-  margin: 0 auto;
-  @include mq("sm-and-up") {
-    max-width: 700px;
-  }
-}
-</style>
+<style lang="scss"></style>

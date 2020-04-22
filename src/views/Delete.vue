@@ -1,12 +1,14 @@
 <template>
   <v-content>
-    <ToolbarSub />
-    <div class="msg__wrapper">
+    <ToolbarSub :link="link" />
+    <div class="c-wrapper">
       <Msg :msg="msg" />
-      <p class="todolist__addbtn" outlined>
-        <v-btn text @click="$router.push('/edit/' + id)">Cancel</v-btn>
-        <v-btn text @click="deleteItem()">OK</v-btn>
-      </p>
+      <div class="d-flex justify-center mt-4">
+        <v-btn class="mr-2" color="white" @click="$router.push(link)">
+          <v-icon>mdi-chevron-left</v-icon>キャンセル
+        </v-btn>
+        <v-btn class="mr-2" color="primary" @click="deleteItem()">OK</v-btn>
+      </div>
     </div>
   </v-content>
 </template>
@@ -23,9 +25,12 @@ export default {
     Msg
   },
   props: ["id"],
-  data: () => ({
-    msg: "削除してよろしいですか？"
-  }),
+  data() {
+    return {
+      msg: "削除してよろしいですか？",
+      link: "/edit/" + this.id
+    };
+  },
   methods: {
     ...mapActions(["deleteItemById"]),
     deleteItem() {
@@ -36,12 +41,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.msg__wrapper {
-  max-width: 344px;
-  margin: 0 auto;
-  @include mq("sm-and-up") {
-    max-width: 700px;
-  }
-}
-</style>
+<style lang="scss"></style>

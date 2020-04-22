@@ -1,10 +1,10 @@
 <template>
   <v-content>
-    <ToolbarSub />
-    <div class="msg__wrapper">
+    <ToolbarSub :link="link" />
+    <div class="c-wrapper">
       <Msg :msg="msg" />
       <p class="todolist__addbtn" outlined>
-        <v-btn text @click="$router.push('/')">Back</v-btn>
+        <v-btn text @click="$router.push(link)">Back</v-btn>
       </p>
     </div>
   </v-content>
@@ -20,19 +20,13 @@ export default {
     ToolbarSub,
     Msg
   },
-  data: () => ({
-    msg: "通信エラーが発生しました"
-  }),
-  computed: {}
+  data() {
+    return {
+      msg: "通信エラーが発生しました",
+      link: "/"
+    };
+  }
 };
 </script>
 
-<style lang="scss">
-.msg__wrapper {
-  max-width: 344px;
-  margin: 0 auto;
-  @include mq("sm-and-up") {
-    max-width: 700px;
-  }
-}
-</style>
+<style lang="scss"></style>
