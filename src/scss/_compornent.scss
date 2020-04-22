@@ -1,4 +1,7 @@
-.c-form-wrapper {
+.body {
+  background-color: #ccc;
+}
+.c-wrapper {
   max-width: 344px;
   margin: 0 auto;
   @include mq("md-and-up") {
@@ -8,4 +11,16 @@
 .c-form {
   padding: 10px 20px;
   background: $col-white;
+  &__input {
+    border: $col-grey-2 1px solid;
+    border-radius: $border-radius;
+    padding: 0 5px;
+  }
+  fieldset {
+    border-color: $col-grey-2;
+  }
+}
+.c-textlink {
+  text-decoration: underline;
+  color: $col-black;
 }
