@@ -9,6 +9,9 @@ export default new Vuex.Store({
   state: {
     items: [],
     tags: [],
+    sortMode: 0,
+    isFilterd: false,
+    filterTagId: 0,
   },
   getters: {
     items(state) {
@@ -24,6 +27,15 @@ export default new Vuex.Store({
     },
     tags(state) {
       return state.tags;
+    },
+    sortMode(state) {
+      return state.sortMode;
+    },
+    isFilterd(state) {
+      return state.isFilterd;
+    },
+    filterTagId(state) {
+      return state.filterTagId;
     },
   },
   mutations: {
@@ -41,6 +53,15 @@ export default new Vuex.Store({
     },
     clearTags(state) {
       state.tags = [];
+    },
+    changeSortMode(state, { mode }) {
+      state.sortMode = mode;
+    },
+    changeIsFilterd(state, { isActive }) {
+      state.isFilterd = isActive;
+    },
+    changeFiterTagId(state, { id }) {
+      state.filterTagId = id;
     },
   },
   actions: {
