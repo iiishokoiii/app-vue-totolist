@@ -47,10 +47,13 @@ export default {
         memo: "",
         tagId: []
       };
+    },
+    tmpTags() {
+      return this.$store.getters.tags;
     }
   },
   methods: {
-    ...mapActions(["updateItemById"]),
+    ...mapActions(["updateItemById", "updateTags"]),
     updateDate(e) {
       this.tmpItem.deadline = e.target.value;
     },

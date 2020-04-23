@@ -48,7 +48,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["updateItemById", "deleteItemById", "updateTags"]),
+    ...mapActions(["updateItemById", "updateTags"]),
     updateDate(e) {
       this.tmpItem.deadline = e.target.value;
     },
