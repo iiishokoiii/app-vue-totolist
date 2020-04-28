@@ -15,13 +15,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.tags__item {
-  color: $col-grey-4;
-  display: inline-block;
-  font-size: 0.8rem;
-  background-color: $col-grey-1;
-  padding: 0.1rem 10px;
-}
-</style>

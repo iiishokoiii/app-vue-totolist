@@ -15,7 +15,7 @@
         <v-textarea outlined class="mt-1" v-model="tmpItem.memo"></v-textarea>
       </div>
     </div>
-    <div class="d-flex justify-center mt-4">
+    <div class="d-flex justify-center mt-4 mb-5">
       <v-btn class="mr-2" color="white" @click="$router.push('/')">
         <v-icon>mdi-chevron-left</v-icon>キャンセル
       </v-btn>

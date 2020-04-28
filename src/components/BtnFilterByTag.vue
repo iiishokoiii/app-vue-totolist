@@ -1,5 +1,5 @@
 <template>
-  <div class="btn-sort d-flex justify-end mb-4">
+  <div class="btn-filter d-flex justify-end mb-4">
     <v-menu transition="slide-y-transition" offset-y>
       <template v-slot:activator="{ on }">
         <v-btn color="primary" class="col-grey" v-on="on">
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-.btn-sort {
+.btn-filter {
   .col-grey {
     color: $col-grey-4;
   }

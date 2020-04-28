@@ -13,7 +13,7 @@
       <template v-if="isItemsLoaded&&sortItems.length===0">
         <Msg msg="表示するアイテムがありません" />
       </template>
-      <div class="d-flex justify-center mt-4">
+      <div class="d-flex justify-center mt-4 mb-5">
         <v-btn color="primary" @click="goAddMode">新規作成</v-btn>
       </div>
     </div>

@@ -9,7 +9,7 @@
       </v-btn>
       <div v-show="tagAddMode" class="mt-2">
         <div class="d-flex">
-          <input type="text" v-model="newTag" list="tags" class="c-form__input" />
+          <input type="text" v-model="newTag" list="tags" class="c-form__input tags__newtag" />
           <v-btn class="mr-2" color="primary" icon @click="addNewTag()">
             <v-icon>mdi-plus-circle</v-icon>
           </v-btn>
@@ -92,11 +92,10 @@ export default {
 </script>
 
 <style lang="scss">
-.tags__item {
-  color: $col-grey-4;
-  display: inline-block;
-  font-size: 0.8rem;
-  background-color: $col-grey-1;
-  padding: 0.1rem 10px;
+.tags__newtag {
+  max-width: 200px;
+  @include mq("md-and-up") {
+    max-width: 400px;
+  }
 }
 </style>
