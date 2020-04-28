@@ -15,7 +15,7 @@ export default {
 
 <style lang="scss">
 .msg {
-  padding: 100px 20px;
+  padding: 60px 20px;
   background: $col-white;
   text-align: center;
 }

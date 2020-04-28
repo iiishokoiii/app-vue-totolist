@@ -8,7 +8,7 @@
       </p>
       <div class="d-flex">
         <p class="form-edit__tag">タグ：</p>
-        <Tags :arr="tmpItem.tagId" :enEdit="enEdit" />
+        <TagsEdit />
       </div>
       <div>
         <p class="mb-2">メモ：</p>
@@ -25,37 +25,41 @@
 </template>
 
 <script>
-import Tags from "../components/Tags";
-import { mapActions } from "vuex";
+import TagsEdit from "../components/TagsEdit";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "FormEdit",
   components: {
-    Tags
-  },
-  props: ["itemid"],
-  data() {
-    return {
-      enEdit: true
-    };
+    TagsEdit
   },
   computed: {
+    ...mapGetters([
+      "activeItemId",
+      "itemById",
+      "items",
+      "tags",
+      "isItemsLoaded",
+      "isTagsLoaded"
+    ]),
     tmpItem() {
-      return this.$store.getters.itemById(this.itemid);
-    },
-    tmpTags() {
-      return this.$store.getters.tags;
+      return this.isItemsLoaded ? { ...this.itemById(this.activeItemId) } : {};
     }
   },
   methods: {
-    ...mapActions(["updateItemById", "updateTags"]),
+    ...mapActions(["saveUpdateItemById", "saveUpdate", "saveUpdateTags"]),
     updateDate(e) {
       this.tmpItem.deadline = e.target.value;
     },
     saveItem() {
-      this.updateItemById({ id: this.itemid, newItem: this.tmpItem });
-      this.updateTags({ tmpTags: this.tmpTags });
-      this.$router.push("/");
+      this.saveUpdate({
+        id: this.activeItemId,
+        newItem: {
+          ...this.tmpItem,
+          tagId: this.itemById(this.activeItemId).tagId
+        }
+      });
+      this.saveUpdateTags({ tmpTags: this.tags });
     }
   }
 };

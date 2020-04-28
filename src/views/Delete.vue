@@ -1,10 +1,10 @@
 <template>
   <v-content>
-    <ToolbarSub :link="link" />
+    <ToolbarSub />
     <div class="c-wrapper">
       <Msg :msg="msg" />
       <div class="d-flex justify-center mt-4">
-        <v-btn class="mr-2" color="white" @click="$router.push(link)">
+        <v-btn class="mr-2" color="white" @click="goBack()">
           <v-icon>mdi-chevron-left</v-icon>キャンセル
         </v-btn>
         <v-btn class="mr-2" color="primary" @click="deleteItem()">OK</v-btn>
@@ -16,7 +16,7 @@
 <script>
 import ToolbarSub from "../components/ToolbarSub";
 import Msg from "../components/Msg";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Delete",
@@ -27,15 +27,25 @@ export default {
   props: ["id"],
   data() {
     return {
-      msg: "削除してよろしいですか？",
-      link: "/edit/" + this.id
+      msg: "削除してよろしいですか？"
     };
   },
+  created() {
+    this.setDeleteMode(true);
+    this.setEditMode(false);
+    this.setActiveItemId(this.id);
+  },
+  computed: {
+    ...mapGetters(["activeItemId", "deleteMode"])
+  },
   methods: {
+    ...mapMutations(["setDeleteMode", "setEditMode", "setActiveItemId"]),
     ...mapActions(["deleteItemById"]),
+    goBack() {
+      this.$router.push("/edit/" + this.activeItemId);
+    },
     deleteItem() {
-      this.deleteItemById({ id: this.id });
-      this.$router.push("/");
+      this.deleteItemById(this.activeItemId);
     }
   }
 };

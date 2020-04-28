@@ -7,10 +7,10 @@
           <v-icon class="mr-1">mdi-calendar-clock</v-icon>
           {{ item.deadline }}
         </p>
-        <Tags :arr="item.tagId" :enEdit="false" />
+        <Tags :itemid="id" />
       </div>
     </div>
-    <button class="todo__arrow" @click="toEditMode()">
+    <button class="todo__arrow" @click="goEditMode()">
       <v-icon>mdi-chevron-right</v-icon>
     </button>
   </div>
@@ -18,6 +18,7 @@
 
 <script>
 import Tags from "../components/Tags";
+import { mapGetters } from "vuex";
 export default {
   name: "ToDo",
   components: {
@@ -25,12 +26,13 @@ export default {
   },
   props: ["id"],
   computed: {
+    ...mapGetters(["itemById"]),
     item() {
-      return this.$store.getters.itemById(this.id);
+      return this.itemById(this.id);
     }
   },
   methods: {
-    toEditMode() {
+    goEditMode() {
       this.$router.push("/edit/" + this.id);
     }
   }

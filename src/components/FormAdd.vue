@@ -8,7 +8,7 @@
       </p>
       <div class="d-flex">
         <p class="form-add__tag">タグ：</p>
-        <Tags :arr="tmpItem.tagId" :enEdit="enEdit" />
+        <TagsEdit />
       </div>
       <div>
         <p class="mb-2 form-add__tag">メモ：</p>
@@ -25,55 +25,55 @@
 </template>
 
 <script>
-import Tags from "../components/Tags";
-import { mapActions } from "vuex";
+import TagsEdit from "../components/TagsEdit";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "FormAdd",
   components: {
-    Tags
-  },
-  data() {
-    return {
-      enEdit: true
-    };
+    TagsEdit
   },
   computed: {
-    tmpItem() {
-      return {
-        title: "",
-        deadline: this.getDate(),
-        isChecked: false,
-        memo: "",
-        tagId: []
-      };
-    },
-    tmpTags() {
-      return this.$store.getters.tags;
-    }
+    ...mapGetters(["tags", "isTagsLoaded"])
+    // tmpItem() {
+    //   return {
+    //     title: "",
+    //     deadline: this.getDate(),
+    //     isChecked: false,
+    //     memo: "",
+    //     tagId: []
+    //   };
+    // }
   },
   methods: {
+    ...mapMutations(["addItem"]),
     ...mapActions(["updateItemById", "updateTags"]),
     updateDate(e) {
       this.tmpItem.deadline = e.target.value;
     },
-    getDate() {
-      let date = new Date();
-      return (
-        date.getFullYear() +
-        "-" +
-        ("00" + Number(date.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("00" + date.getDate()).slice(-2)
-      );
-    },
-    getId() {
-      let date = new Date();
-      return date.getTime();
-    },
+    // getDate() {
+    //   let date = new Date();
+    //   return (
+    //     date.getFullYear() +
+    //     "-" +
+    //     ("00" + Number(date.getMonth() + 1)).slice(-2) +
+    //     "-" +
+    //     ("00" + date.getDate()).slice(-2)
+    //   );
+    // },
+    // getId() {
+    //   let date = new Date();
+    //   return date.getTime();
+    // },
     saveItem() {
       this.tmpItem.id = this.getId();
-      this.updateItemById({ id: this.tmpItem.id, newItem: this.tmpItem });
+      this.updateItemById({
+        id: this.tmpItem.id,
+        newItem: {
+          ...this.tmpItem,
+          tagId: this.itemById(this.activeItemId).tagId
+        }
+      });
       this.updateTags({ tmpTags: this.tmpTags });
       this.$router.push("/");
     }

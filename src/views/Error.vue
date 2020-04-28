@@ -3,8 +3,10 @@
     <ToolbarSub :link="link" />
     <div class="c-wrapper">
       <Msg :msg="msg" />
-      <p class="todolist__addbtn" outlined>
-        <v-btn text @click="$router.push(link)">Back</v-btn>
+      <p v-if="isNoItem" class="d-flex justify-center">
+        <v-btn class="mr-2" color="white" @click="$router.push('/')">
+          <v-icon>mdi-chevron-left</v-icon>戻る
+        </v-btn>
       </p>
     </div>
   </v-content>

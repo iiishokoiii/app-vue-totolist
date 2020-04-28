@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase";
-// import doc from "../main";
+import router from "../router/";
 
 Vue.use(Vuex);
 
@@ -9,9 +9,16 @@ export default new Vuex.Store({
   state: {
     items: [],
     tags: [],
-    sortMode: 0,
-    isFilterd: false,
+    isSortByStatus: 0,
+    filterMode: 0,
+    isFilterdByTag: false,
     filterTagId: 0,
+    activeItemId: 0,
+    editMode: false,
+    deleteMode: false,
+    isItemsLoaded: false,
+    isTagsLoaded: false,
+    isNoItem: false,
   },
   getters: {
     items(state) {
@@ -28,19 +35,43 @@ export default new Vuex.Store({
     tags(state) {
       return state.tags;
     },
-    sortMode(state) {
-      return state.sortMode;
+    isSortByStatus(state) {
+      return state.isSortByStatus;
     },
-    isFilterd(state) {
-      return state.isFilterd;
+    filterMode(state) {
+      return state.filterMode;
+    },
+    isFilterdByTag(state) {
+      return state.isFilterdByTag;
     },
     filterTagId(state) {
       return state.filterTagId;
     },
+    activeItemId(state) {
+      return state.activeItemId;
+    },
+    editMode(state) {
+      return state.editMode;
+    },
+    deleteMode(state) {
+      return state.deleteMode;
+    },
+    isItemsLoaded(state) {
+      return state.isItemsLoaded;
+    },
+    isTagsLoaded(state) {
+      return state.isTagsLoaded;
+    },
+    isNoItem(state) {
+      return state.isNoItem;
+    },
   },
   mutations: {
-    updateItem(state, { idx, newItem }) {
-      state.items[idx] = newItem;
+    updateItem(state, { id, newItem }) {
+      let _arr = state.items.map((item) => {
+        return item.id === id ? newItem : item;
+      });
+      state.items = _arr;
     },
     addItem(state, newItem) {
       state.items.push(newItem);
@@ -54,18 +85,41 @@ export default new Vuex.Store({
     clearTags(state) {
       state.tags = [];
     },
-    changeSortMode(state, { mode }) {
-      state.sortMode = mode;
+    setSortByStatus(state, isActive) {
+      state.isSortByStatus = isActive;
     },
-    changeIsFilterd(state, { isActive }) {
-      state.isFilterd = isActive;
+    setFilterMode(state, mode) {
+      state.filterMode = mode;
     },
-    changeFiterTagId(state, { id }) {
+    setFilterdByTag(state, isActive) {
+      state.isFilterdByTag = isActive;
+    },
+    setFiterTagId(state, id) {
       state.filterTagId = id;
+    },
+    setActiveItemId(state, tagId) {
+      state.activeItemId = tagId;
+    },
+    setEditMode(state, isActive) {
+      state.editMode = isActive;
+    },
+    setIsItemsLoaded(state, isActive) {
+      state.isItemsLoaded = isActive;
+    },
+    setIsTagsLoaded(state, isActive) {
+      state.isTagsLoaded = isActive;
+    },
+    setDeleteMode(state, isActive) {
+      state.deleteMode = isActive;
+    },
+    setIsNoItem(state, isActive) {
+      state.isNoItem = isActive;
     },
   },
   actions: {
-    fetchItems({ commit }) {
+    fetchItems({ state, commit }) {
+      commit("setIsItemsLoaded", false);
+      commit("setIsNoItem", false);
       firebase
         .firestore()
         .collection("boards/1/items")
@@ -75,12 +129,21 @@ export default new Vuex.Store({
           docs.forEach((doc) => {
             commit("addItem", doc.data());
           });
+          commit(
+            "setIsNoItem",
+            !state.items.some((item) => {
+              return item.id === state.activeItemId;
+            }) && state.editMode
+          );
+          commit("setIsItemsLoaded", true);
         })
         .catch(() => {
-          this.$router.push("/error");
+          router.push("/error");
+          commit("setIsItemsLoaded", true);
         });
     },
     fetchTags({ commit }) {
+      commit("setIsTagsLoaded", false);
       firebase
         .firestore()
         .doc("boards/1/tags/0")
@@ -90,30 +153,34 @@ export default new Vuex.Store({
           doc.data().tags.forEach((tag) => {
             commit("addTag", tag);
           });
+          commit("setIsTagsLoaded", true);
         })
         .catch(() => {
-          this.$router.push("/error");
+          router.push("/error");
+          commit("setIsTagsLoaded", true);
         });
     },
-    updateItemById({ dispatch }, { id, newItem }) {
+    saveUpdate({ dispatch }, { id, newItem }) {
       firebase
         .firestore()
         .doc("boards/1/items/" + id)
         .set(newItem)
         .then(() => {
           dispatch("fetchItems");
+          router.push("/");
         });
     },
-    deleteItemById({ dispatch }, { id }) {
+    deleteItemById({ dispatch }, id) {
       firebase
         .firestore()
         .doc("boards/1/items/" + id)
         .delete()
         .then(() => {
           dispatch("fetchItems");
+          router.push("/");
         });
     },
-    updateTags({ dispatch }, { tmpTags }) {
+    saveUpdateTags({ dispatch }, { tmpTags }) {
       firebase
         .firestore()
         .doc("boards/1/tags/0")
