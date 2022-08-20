@@ -1,4 +1,4 @@
-# app-todolist
+# app-vue-todolist
 
 ## Project setup
 ```
